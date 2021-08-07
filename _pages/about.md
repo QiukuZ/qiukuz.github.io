@@ -15,6 +15,8 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I am a second year M.S. student at Zhejiang University.I am a member of Robotics Lab of Zhejiang University, leading by Prof. Rong Xiong and A.P. [Yue Wang](https://ywang-zju.github.io).
+I am a second year M.S. student at Zhejiang University.I am a member of Robotics Lab of Zhejiang University, leading by Prof. [Rong Xiong](https://person.zju.edu.cn/rongxiong) and A.P. [Yue Wang](https://ywang-zju.github.io).
+
 I received my B.S. degree from Department of Control Science and Engineering, Zhejiang University in 2020.
+
 My research interests are 3D scene reconstrucion and optimization.
