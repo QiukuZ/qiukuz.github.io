@@ -4,7 +4,7 @@ title: 点云采集系统
 description: 多目+旋转激光稠密点云采集系统 
 img: /assets/img/project1_demo.png
 importance: 1
-category: 工程项目
+category: WORK
 ---
 
 本项目为基于多目相机+旋转2D激光雷达的稠密彩色激光点云采集设备(专利号:202110964419.9)，设备间标定使用基于AprilTag辅助的特征点优化。
