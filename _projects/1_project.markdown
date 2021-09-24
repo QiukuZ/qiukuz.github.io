@@ -24,20 +24,21 @@ category: WORK
 整套系统的示意图如下图所示：
 <div align=center> <img src="/assets/img/calib.png" alt="calb" style="zoom:35%"/></div>
 
-
-
+<br/>
+<br/>
 
 标定借助AprilTag进行，场景示意图如下：
 
 <div align=center> <img src="/assets/img/calib_scene.png" alt="calb_scene" style="zoom:30%"/></div>
 
-
-
+<br/>
+<br/>
 
 在室内环境的采集结果:
 
 <div align=center> <img src="/assets/img/project1_result.png" alt="result" style="zoom:40%"/></div>
-
+<br/>
+<br/>
 
 
 结果点云可下载：
