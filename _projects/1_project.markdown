@@ -23,11 +23,22 @@ category: work
 
 整套系统的示意图如下图所示：
 
+
 <div align=center> <img src="/assets/img/calib.png" alt="calb" style="zoom:50%"/></div>
+
 
 标定借助AprilTag进行，场景示意图如下：
 
-<div align=center> <img src="/assets/img/calib_scene.png" alt="calb_scene" style="zoom:50%"/></div>
+
+<div align=center> <img src="/assets/img/calib_scene.png" alt="calb_scene" style="zoom:25%"/></div>
+
+
+在室内环境的采集结果:
+
+
+<div align=center> <img src="/assets/img/project1_result.png" alt="result" style="zoom:25%"/></div>
+
+
 
 结果点云下载：
 - [浙江大学教18-大厅](https://pan.zju.edu.cn/share/62cbaaf5a47e087d37310637e8)
