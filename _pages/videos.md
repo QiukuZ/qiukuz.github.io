@@ -2,7 +2,7 @@
 layout: page
 title: Videos
 permalink: /videos/
-description: 推荐大家去B站观看我的所有视频，期待一键三连+关注 :smile:
+description: 推荐大家去B站观看我的所有视频，期待一键三连+关注
 nav: true
 display_categories: [work, fun]
 horizontal: false
