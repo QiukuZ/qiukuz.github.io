@@ -1,6 +1,6 @@
 ---
 layout: about
-title: about
+title: About
 permalink: /
 description: Department of Control Science and Engineering, Zhejiang University, China
 
