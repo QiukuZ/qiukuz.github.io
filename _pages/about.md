@@ -21,4 +21,4 @@ I received my B.S. degree from Department of Control Science and Engineering, Zh
 
 My research interests are 3D scene reconstrucion and optimization.
 
-For more about my daily life, you can follow my **[Bilibili-秋裤](https://space.bilibili.com/430587061)** channel.
+For more about my daily life, you can follow my **[Bilibili-秋裤qk](https://space.bilibili.com/430587061)** channel.
