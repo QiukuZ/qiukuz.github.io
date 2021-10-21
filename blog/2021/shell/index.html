@@ -11,7 +11,7 @@
   Qunkang  Zhang
 
 
-  | Notes
+  | Shell 教程笔记
 
 </title>
 <meta name="description" content="My name is Qiuku.
@@ -37,7 +37,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐸</text></svg>">
 
 <link rel="stylesheet" href="/assets/css/main.css">
-<link rel="canonical" href="/blog/">
+<link rel="canonical" href="/blog/2021/shell/">
 
 <!-- JQuery -->
 <!-- jQuery -->
@@ -124,8 +124,6 @@
           
           
           
-          
-          
           <li class="nav-item ">
               <a class="nav-link" href="/projects/">
                 Projects
@@ -153,32 +151,77 @@
     <!-- Content -->
 
     <div class="container mt-5">
-      <div class="post">
+      
 
-  <div class="header-bar">
-    <h1>Qiuku</h1>
-    <h2>To be a happy and rich man.</h2>
-  </div>
+<div class="post">
 
+  <header class="post-header">
+    <h1 class="post-title">Shell 教程笔记</h1>
+    <p class="post-meta">July 31, 2021</p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <h3><a class="post-title" href="/blog/2021/tsdf/">利用Open3D从RGBD构建TSDF</a></h3>
-        <p class="post-meta">October 15, 2021</p>
-        <p>TSDF构建中的一些注意事项</p>
-      </li>
-    
-      <li>
-        <h3><a class="post-title" href="/blog/2021/shell/">Shell 教程笔记</a></h3>
-        <p class="post-meta">July 31, 2021</p>
-        <p>shell笔记，保存了一些常用教程和相关网站</p>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+    <h2 id="shell编程笔记">Shell编程笔记</h2>
+
+<p>完整教程：<a href="https://wangdoc.com/bash/intro.html">Bash 脚本教程</a></p>
+
+<h3 id="1binbash">1.#!/bin/bash</h3>
+
+<p>这句话告诉操作系统用来解释脚本的程序位置！</p>
+
+<p>在Shell开头中，#并不只是用来注释，第一行用来<strong>声明解释程序的路径</strong></p>
+
+<p>脚本的第一行通常是指定解释器，即这个脚本必须通过什么解释器执行。这一行以<code class="language-plaintext highlighter-rouge">#!</code>字符开头，这个字符称为 Shebang，所以这一行就叫做 <strong>Shebang</strong> 行。</p>
+
+<h3 id="2sh和bash">2.sh和bash</h3>
+
+<p>sh跟bash的区别，实际上就是bash有没有开启posix模式的区别。</p>
+
+<p>如果第一行写成 #!/bin/bash –posix，那么脚本执行效果跟#!/bin/sh是一样的（遵循posix的特定规范，有可能就包括这样的规范：“当某行代码出错时，不继续往下解释”）。</p>
+
+<h3 id="3shell教程">3.Shell教程</h3>
+
+<ul>
+  <li>
+    <p><a href="https://www.runoob.com/linux/linux-shell.html">菜鸟教程-Shell教程</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.runoob.com/linux/linux-shell-variable.html">菜鸟教程-Shell变量</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.runoob.com/linux/linux-shell-passing-arguments.html">菜鸟教程-Shell传递参数</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.runoob.com/linux/linux-shell-array.html">菜鸟教程-Shell数组</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.runoob.com/linux/linux-shell-basic-operators.html">菜鸟教程-Shell运算符</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.runoob.com/linux/linux-shell-echo.html">菜鸟教程-Shell echo</a> 、 <a href="https://www.runoob.com/linux/linux-shell-printf.html">菜鸟教程-Shell printf</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.runoob.com/linux/linux-shell-process-control.html">菜鸟教程-流程控制</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.runoob.com/linux/linux-shell-func.html">菜鸟教程-函数</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.runoob.com/linux/linux-shell-io-redirections.html">菜鸟教程-IO重定向</a></p>
+  </li>
+</ul>
+
+<h3 id="4bash多进程">4.bash多进程</h3>
+
+<p>在bash中，在命令之后添加 <strong>&amp;</strong> 符号进行后台执行。</p>
+
+<p>wait 命令：等待前置的所有后台任务完成后继续往下执行。</p>
+
+<p><a href="https://www.cnblogs.com/weifeng1463/p/8818631.html">如何准确控制并发的进程数目？</a></p>
+
+  </article>
 
   
-
 
 </div>
 

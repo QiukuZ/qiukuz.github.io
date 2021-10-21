@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-10-21T20:50:04+08:00</updated><id>/feed.xml</id><title type="html">blank</title><subtitle>My name is Qiuku.
+</subtitle><entry><title type="html">利用Open3D从RGBD构建TSDF</title><link href="/blog/2021/tsdf/" rel="alternate" type="text/html" title="利用Open3D从RGBD构建TSDF" /><published>2021-10-15T03:15:00+08:00</published><updated>2021-10-15T03:15:00+08:00</updated><id>/blog/2021/tsdf</id><content type="html" xml:base="/blog/2021/tsdf/">&lt;h2 id=&quot;利用open3d从rgbd构建tsdf&quot;&gt;利用Open3D从RGBD构建TSDF&lt;/h2&gt;
+
+&lt;h4 id=&quot;输入&quot;&gt;输入：&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;RGB图像以及对应深度图&lt;/li&gt;
+  &lt;li&gt;相机内参与外参[图像轨迹]&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;输出&quot;&gt;输出：&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;TSDF表示的场景&lt;/p&gt;
+
+    &lt;p&gt;可进一步转换输出为：&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;Mesh&lt;/li&gt;
+      &lt;li&gt;VoxelGrid&lt;/li&gt;
+      &lt;li&gt;PointCloud&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;参考程序&quot;&gt;参考程序：&lt;/h4&gt;
+
+&lt;p&gt;其中Open3D官方也提供了例程：https://github.com/isl-org/Open3D/blob/master/examples/python/pipelines/rgbd_integration.ipynb&lt;/p&gt;
+
+&lt;p&gt;本文不再重复例程中提供的代码，只记录一些值得关注的注意事项以及关键代码&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;网格创建&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# 创建ScalableTSDFVolume
+# ScalableTSDFVolume 能更好的适应大场景的TSDF
+# voxel_length：每个voxel的尺寸
+# sdf_trunc：截断距离
+# volume_unit_resolution：存储sdf的网格尺寸，越大内存越大，默认=16
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;volume&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o3d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pipelines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;integration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ScalableTSDFVolume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;voxel_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;6.0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;512.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sdf_trunc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.02&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color_type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;o3d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pipelines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;integration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TSDFVolumeColorType&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RGB8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;volume_unit_resolution&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;相机模型&lt;/p&gt;
+
+    &lt;p&gt;相机模型在volume.intergrate时需要作为变量传入，Open3D例程中使用默认的Pinhole相机[640*480]，如果需要自定义自己的相机则需要自己按需创建。比如：&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Pinhole ： w，h，fx， fy， cx， cy
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cam&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o3d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;camera&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PinholeCameraIntrinsic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;576&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;505.4856579685043&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;505.4856579685043&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;576&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;更多相机模型可参考Open3D doc：http://www.open3d.org/docs/release/python_api/open3d.camera.PinholeCameraIntrinsic.html。&lt;/p&gt;
+
+    &lt;p&gt;但似乎Open3D只支持Pinhole，如果遇到存在畸变的图像，不妨在最先处理前，就进行去畸变操作。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;轨迹读取&lt;/p&gt;
+
+    &lt;p&gt;相机轨迹在volume.intergrate时需要作为变量传入，传入格式为4*4变换矩阵，坐标系定义为 from world to camera。如果轨迹中存储的是from camera to world(相机在世界坐标系)，则需要inv。&lt;/p&gt;
+
+    &lt;p&gt;Open3D提供的例程提供了一种读取traj log的接口，这个方式并非唯一，只需要保证在每帧fusion的时候，能在变量中传入4*4变换矩阵即可。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;深度读取&lt;/p&gt;
+
+    &lt;p&gt;例程中，需要先分别读取rgb图像和depth图像，然后在进一步生成rgbd图像，最后将rgbd图像传入intergrate步骤。&lt;/p&gt;
+
+    &lt;p&gt;值得注意的一点是，Open3D中默认的depth scale = 1000，因此如果不同格式存储的depth可能需要调整scale。&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# depth_scale (float, optional, default=1000.0) – The ratio to scale depth values. The depth values will first be scaled and then truncated.
+# depth_trunc (float, optional, default=3.0) – Depth values larger than depth_trunc gets truncated to 0. The depth values will first be scaled and then truncated.
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RGBDImage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;create_from_color_and_depth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;depth&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;depth_scale&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1000.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;depth_trunc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;3.0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;convert_rgb_to_intensity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;网格提取or点云提取&lt;/p&gt;
+
+    &lt;p&gt;在完成TSDF的intergrate之后，可以从TSDF中提取出Mesh or PointCloud or VoxelGrid。&lt;/p&gt;
+
+    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;voxel_grid&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;volume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;extract_voxel_point_cloud&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mesh&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;volume&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;extract_triangle_mesh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+
+    &lt;p&gt;更多提取格式可以参考：http://www.open3d.org/docs/release/python_api/open3d.pipelines.integration.ScalableTSDFVolume.html。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">利用Open3D从RGBD构建TSDF</summary></entry><entry><title type="html">Shell 教程笔记</title><link href="/blog/2021/shell/" rel="alternate" type="text/html" title="Shell 教程笔记" /><published>2021-07-31T03:12:00+08:00</published><updated>2021-07-31T03:12:00+08:00</updated><id>/blog/2021/shell</id><content type="html" xml:base="/blog/2021/shell/">&lt;h2 id=&quot;shell编程笔记&quot;&gt;Shell编程笔记&lt;/h2&gt;
+
+&lt;p&gt;完整教程：&lt;a href=&quot;https://wangdoc.com/bash/intro.html&quot;&gt;Bash 脚本教程&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;1binbash&quot;&gt;1.#!/bin/bash&lt;/h3&gt;
+
+&lt;p&gt;这句话告诉操作系统用来解释脚本的程序位置！&lt;/p&gt;
+
+&lt;p&gt;在Shell开头中，#并不只是用来注释，第一行用来&lt;strong&gt;声明解释程序的路径&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;脚本的第一行通常是指定解释器，即这个脚本必须通过什么解释器执行。这一行以&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#!&lt;/code&gt;字符开头，这个字符称为 Shebang，所以这一行就叫做 &lt;strong&gt;Shebang&lt;/strong&gt; 行。&lt;/p&gt;
+
+&lt;h3 id=&quot;2sh和bash&quot;&gt;2.sh和bash&lt;/h3&gt;
+
+&lt;p&gt;sh跟bash的区别，实际上就是bash有没有开启posix模式的区别。&lt;/p&gt;
+
+&lt;p&gt;如果第一行写成 #!/bin/bash –posix，那么脚本执行效果跟#!/bin/sh是一样的（遵循posix的特定规范，有可能就包括这样的规范：“当某行代码出错时，不继续往下解释”）。&lt;/p&gt;
+
+&lt;h3 id=&quot;3shell教程&quot;&gt;3.Shell教程&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.runoob.com/linux/linux-shell.html&quot;&gt;菜鸟教程-Shell教程&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.runoob.com/linux/linux-shell-variable.html&quot;&gt;菜鸟教程-Shell变量&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.runoob.com/linux/linux-shell-passing-arguments.html&quot;&gt;菜鸟教程-Shell传递参数&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.runoob.com/linux/linux-shell-array.html&quot;&gt;菜鸟教程-Shell数组&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.runoob.com/linux/linux-shell-basic-operators.html&quot;&gt;菜鸟教程-Shell运算符&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.runoob.com/linux/linux-shell-echo.html&quot;&gt;菜鸟教程-Shell echo&lt;/a&gt; 、 &lt;a href=&quot;https://www.runoob.com/linux/linux-shell-printf.html&quot;&gt;菜鸟教程-Shell printf&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.runoob.com/linux/linux-shell-process-control.html&quot;&gt;菜鸟教程-流程控制&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.runoob.com/linux/linux-shell-func.html&quot;&gt;菜鸟教程-函数&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://www.runoob.com/linux/linux-shell-io-redirections.html&quot;&gt;菜鸟教程-IO重定向&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;4bash多进程&quot;&gt;4.bash多进程&lt;/h3&gt;
+
+&lt;p&gt;在bash中，在命令之后添加 &lt;strong&gt;&amp;amp;&lt;/strong&gt; 符号进行后台执行。&lt;/p&gt;
+
+&lt;p&gt;wait 命令：等待前置的所有后台任务完成后继续往下执行。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/weifeng1463/p/8818631.html&quot;&gt;如何准确控制并发的进程数目？&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">Shell编程笔记</summary></entry></feed>

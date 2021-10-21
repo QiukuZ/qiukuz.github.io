@@ -11,7 +11,7 @@
   Qunkang  Zhang
 
 
-  | Notes
+  | 点云采集系统
 
 </title>
 <meta name="description" content="My name is Qiuku.
@@ -37,7 +37,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐸</text></svg>">
 
 <link rel="stylesheet" href="/assets/css/main.css">
-<link rel="canonical" href="/blog/">
+<link rel="canonical" href="/projects/1_project/">
 
 <!-- JQuery -->
 <!-- jQuery -->
@@ -101,7 +101,7 @@
           </li>
           
           <!-- Blog -->
-          <li class="nav-item active">
+          <li class="nav-item ">
             <a class="nav-link" href="/blog/">
               Blog
               
@@ -109,8 +109,6 @@
           </li>
           
           <!-- Other pages -->
-          
-          
           
           
           
@@ -155,30 +153,52 @@
     <div class="container mt-5">
       <div class="post">
 
-  <div class="header-bar">
-    <h1>Qiuku</h1>
-    <h2>To be a happy and rich man.</h2>
-  </div>
+  <header class="post-header">
+    <h1 class="post-title">点云采集系统</h1>
+    <p class="post-description">多目+旋转激光稠密点云采集系统</p>
+  </header>
 
+  <article>
+    <p>本项目为基于多目相机+旋转2D激光雷达的稠密彩色激光点云采集设备(专利号:202110964419.9)，设备间标定使用基于AprilTag辅助的特征点优化。</p>
 
-  <ul class="post-list">
-    
-      <li>
-        <h3><a class="post-title" href="/blog/2021/tsdf/">利用Open3D从RGBD构建TSDF</a></h3>
-        <p class="post-meta">October 15, 2021</p>
-        <p>TSDF构建中的一些注意事项</p>
-      </li>
-    
-      <li>
-        <h3><a class="post-title" href="/blog/2021/shell/">Shell 教程笔记</a></h3>
-        <p class="post-meta">July 31, 2021</p>
-        <p>shell笔记，保存了一些常用教程和相关网站</p>
-      </li>
-    
-  </ul>
+<p>采集流程为：</p>
 
-  
+<ol>
+  <li>*系统参数标定</li>
+  <li>激光点云采集</li>
+  <li>激光点云拼接</li>
+  <li>多目图像采集</li>
+  <li>点云着色</li>
+  <li>点云拼接</li>
+</ol>
 
+<p>*代表只需完成一次即可，不需要重复进行</p>
+
+<p>整套系统的示意图如下图所示：</p>
+<div align="center"> <img src="/assets/img/calib.png" alt="calb" style="zoom:35%" /></div>
+
+<p><br />
+<br /></p>
+
+<p>标定借助AprilTag进行，场景示意图如下：</p>
+
+<div align="center"> <img src="/assets/img/calib_scene.png" alt="calb_scene" style="zoom:30%" /></div>
+
+<p><br />
+<br /></p>
+
+<p>在室内环境的采集结果:</p>
+
+<div align="center"> <img src="/assets/img/project1_result.png" alt="result" style="zoom:40%" /></div>
+<p><br />
+<br /></p>
+
+<p>结果点云可下载：</p>
+<ul>
+  <li><a href="https://pan.zju.edu.cn/share/62cbaaf5a47e087d37310637e8">浙江大学教18-大厅</a></li>
+</ul>
+
+  </article>
 
 </div>
 
